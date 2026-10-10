@@ -763,7 +763,6 @@ log "\n== Custom nodes (git) =="
 # Add more by pasting another line like:
 #   "https://github.com/<author>/<repo>.git"
 CUSTOM_NODES=(
-"https://github.com/Azornes/Comfyui-Model-Resolver.git"
 "https://github.com/UmeAiRT/ComfyUI-UmeAiRT-Toolkit.git"
 "https://github.com/Mirumo0u0/ComfyUI-Cosmos-Reference.git"
 "https://github.com/kohya-ss/ComfyUI-Anima-LLLite.git"

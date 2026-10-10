@@ -758,9 +758,31 @@ TMP_DL_DIR="$(mktemp -d)"
 ensure_dirs
 
 log "\n== Custom nodes (git) =="
-# Add ComfyUI custom node repos here, one per line, e.g.:
+# One git repo per line. Each repo is cloned into ComfyUI/custom_nodes/
+# (folder named after the repo). Existing folders are skipped.
+# Add more by pasting another line like:
 #   "https://github.com/<author>/<repo>.git"
 CUSTOM_NODES=(
+"https://github.com/Azornes/Comfyui-Model-Resolver.git"
+"https://github.com/UmeAiRT/ComfyUI-UmeAiRT-Toolkit.git"
+"https://github.com/Mirumo0u0/ComfyUI-Cosmos-Reference.git"
+"https://github.com/kohya-ss/ComfyUI-Anima-LLLite.git"
+"https://github.com/scraed/LanPaint.git"
+"https://github.com/ltdrdata/ComfyUI-Manager.git"
+"https://github.com/Fannovel16/comfyui_controlnet_aux.git
+"https://github.com/rgthree/rgthree-comfy.git"
+"https://github.com/ltdrdata/ComfyUI-Impact-Pack.git"
+"https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git"
+"https://github.com/yolain/ComfyUI-Easy-Use.git"
+"https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git"
+"https://github.com/jags111/efficiency-nodes-comfyui.git"
+"https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git"
+"https://github.com/cubiq/ComfyUI_essentials.git"
+"https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git"
+"https://github.com/alexopus/ComfyUI-Image-Saver.git"
+"https://github.com/kohya-ss/ComfyUI-Anima-LLLite.git"
+"https://github.com/IAMCCS/IAMCCS-nodes.git"
+"https://github.com/SethRobinson/comfyui-workflow-to-api-converter-endpoint.git"
 )
 for url in ${CUSTOM_NODES[@]+"${CUSTOM_NODES[@]}"}; do
   clone_extension "$url"

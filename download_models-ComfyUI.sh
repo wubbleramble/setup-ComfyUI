@@ -45,11 +45,12 @@ EMBEDDINGS_DIR="${MODELS_DIR}/embeddings"
 UPSCALE_DIR="${MODELS_DIR}/upscale_models"
 LATENT_UPSCALE_DIR="${MODELS_DIR}/latent_upscale_models"
 LORA_DIR="${MODELS_DIR}/loras"
-# NOTE: ComfyUI's built-in checkpoint folder is "checkpoints". The
-# folder below is "ckpt", as requested. ComfyUI only lists files from
-# "ckpt" if it is registered in extra_model_paths.yaml. To use the
-# default instead, change "ckpt" to "checkpoints" on the next line.
-CHECKPOINT_DIR="${MODELS_DIR}/ckpt"
+# NOTE: the "Checkpoint" category below downloads into diffusion_models,
+# as requested. That is the folder read by the "Load Diffusion Model"
+# (UNet) loader. The regular "Load Checkpoint" node reads "checkpoints"
+# instead, so change "diffusion_models" to "checkpoints" on the next
+# line if a file needs to appear in that node's dropdown.
+CHECKPOINT_DIR="${MODELS_DIR}/diffusion_models"
 VAE_DIR="${MODELS_DIR}/vae"
 VAE_APPROX_DIR="${MODELS_DIR}/vae_approx"
 TEXT_ENCODER_DIR="${MODELS_DIR}/text_encoders"
@@ -768,7 +769,7 @@ CUSTOM_NODES=(
 "https://github.com/kohya-ss/ComfyUI-Anima-LLLite.git"
 "https://github.com/scraed/LanPaint.git"
 "https://github.com/ltdrdata/ComfyUI-Manager.git"
-"https://github.com/Fannovel16/comfyui_controlnet_aux.git
+"https://github.com/Fannovel16/comfyui_controlnet_aux.git"
 "https://github.com/rgthree/rgthree-comfy.git"
 "https://github.com/ltdrdata/ComfyUI-Impact-Pack.git"
 "https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git"

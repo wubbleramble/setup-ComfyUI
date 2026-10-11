@@ -784,6 +784,13 @@ CUSTOM_NODES=(
 "https://github.com/IAMCCS/IAMCCS-nodes.git"
 "https://github.com/SethRobinson/comfyui-workflow-to-api-converter-endpoint.git"
 "https://github.com/hayden-cn/ComfyUI-Model-Manager.git"
+"https://github.com/kijai/ComfyUI-KJNodes.git"
+"https://github.com/shadowcz007/comfyui-mixlab-nodes.git"
+"https://github.com/chflame163/ComfyUI_LayerStyle_Advance.git"
+"https://github.com/ltdrdata/was-node-suite-comfyui.git"
+"https://github.com/regiellis/ComfyUI-EasyColorCorrector.git"
+"https://github.com/PixWizardry/ComfyUI-PIX_Nvidia_RTX_Deblur_Denoise.git"
+"https://github.com/ryanontheinside/ComfyUI_RealtimeNodes.git"
 )
 for url in ${CUSTOM_NODES[@]+"${CUSTOM_NODES[@]}"}; do
   clone_extension "$url"

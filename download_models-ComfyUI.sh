@@ -764,7 +764,7 @@ log "\n== Custom nodes (git) =="
 # Add more by pasting another line like:
 #   "https://github.com/<author>/<repo>.git"
 CUSTOM_NODES=(
-"https://github.com/UmeAiRT/ComfyUI-UmeAiRT-Toolkit.git"
+"https://gitlab.com/UmeAiRT-Studio/ComfyUI-UmeAiRT-Toolkit.git"
 "https://github.com/Mirumo0u0/ComfyUI-Cosmos-Reference.git"
 "https://github.com/kohya-ss/ComfyUI-Anima-LLLite.git"
 "https://github.com/scraed/LanPaint.git"
@@ -791,6 +791,10 @@ CUSTOM_NODES=(
 "https://github.com/regiellis/ComfyUI-EasyColorCorrector.git"
 "https://github.com/PixWizardry/ComfyUI-PIX_Nvidia_RTX_Deblur_Denoise.git"
 "https://github.com/ryanontheinside/ComfyUI_RealtimeNodes.git"
+"https://github.com/willmiao/ComfyUI-Lora-Manager.git"
+"https://github.com/Comfy-Org/Nvidia_RTX_Nodes_ComfyUI.git"
+"https://github.com/Miosp/ComfyUI-FBCNN.git"
+"https://github.com/BetaDoggo/comfyui-rtx-simple.got"
 )
 for url in ${CUSTOM_NODES[@]+"${CUSTOM_NODES[@]}"}; do
   clone_extension "$url"

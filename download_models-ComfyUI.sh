@@ -817,7 +817,7 @@ download_file "https://huggingface.co/Comfy-Org/SeedVR2/resolve/main/vae/ema_vae
 
 log "\n== Text Encoder =="
 download_file "https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/text_encoders/qwen_3_06b_base.safetensors" "$TEXT_ENCODER_DIR"
-download_file "download_file "https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/text_encoders/qwen_3_06b_base.safetensors" "$TEXT_ENCODER_DIR"
+download_file "https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/text_encoders/qwen_3_06b_base.safetensors" "$TEXT_ENCODER_DIR"
 
 log "\n== Upscale models (ESRGAN and others) =="
 UPSCALERS=(

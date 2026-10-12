@@ -797,6 +797,8 @@ CUSTOM_NODES=(
 "https://github.com/Miosp/ComfyUI-FBCNN.git"
 "https://github.com/BetaDoggo/comfyui-rtx-simple.git"
 "https://github.com/pixaroma/ComfyUI-Pixaroma.git"
+"https://github.com/Smirnov75/ComfyUI-mxToolkit.git"
+"https://github.com/Azornes/Comfyui-Resolution-Master.git"
 )
 for url in ${CUSTOM_NODES[@]+"${CUSTOM_NODES[@]}"}; do
   clone_extension "$url"

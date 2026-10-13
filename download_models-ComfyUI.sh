@@ -70,6 +70,17 @@ CIVITAI_API_KEY="${CIVITAI_API_KEY:-}"
 # huggingface.co downloads (like the ControlNet/adetailer links below)
 # don't need this, but it's picked up automatically if set.
 HUGGINGFACE_TOKEN="${HUGGINGFACE_TOKEN:-}"
+# Python interpreter that ComfyUI actually runs with. On vast.ai base
+# images this is the pre-made /venv/main environment. If that path does
+# not exist, fall back to whatever python3 is on PATH.
+# Override without editing this file:  export COMFY_PYTHON="/path/to/python"
+if [ -n "${COMFY_PYTHON:-}" ]; then
+  PY="$COMFY_PYTHON"
+elif [ -x /venv/main/bin/python ]; then
+  PY=/venv/main/bin/python
+else
+  PY="$(command -v python3 || true)"
+fi
 
 LOG_FILE="./download_log_$(date +%Y%m%d_%H%M%S).txt"
 
@@ -748,6 +759,41 @@ download_file() {
   return 0
 }
 
+# install_node_requirements
+# Runs "pip install -r requirements.txt" for EVERY folder inside
+# custom_nodes (new and already-existing ones). Packages that are
+# already installed are skipped by pip, so re-running is safe.
+install_node_requirements() {
+  if [ -z "$PY" ]; then
+    log "  [WARN] No Python found -- skipping custom node requirements."
+    return 1
+  fi
+  log "  Using Python: $PY"
+
+  # Save the currently installed torch/numpy versions as a "do not
+  # change" list, so a node's requirements cannot swap the CUDA build
+  # of PyTorch for a different one.
+  local constraints
+  constraints="$(mktemp)"
+  "$PY" -m pip freeze 2>/dev/null \
+    | grep -iE '^(torch|torchvision|torchaudio|numpy)==' > "$constraints"
+
+  local req node_name
+  for req in "$NODES_DIR"/*/requirements.txt; do
+    [ -f "$req" ] || continue
+    node_name="$(basename "$(dirname "$req")")"
+    log "  [PIP] $node_name"
+    if "$PY" -m pip install -c "$constraints" -r "$req" 2>&1 | tee -a "$LOG_FILE"; then
+      SUCCEEDED+=("pip requirements: $node_name")
+    else
+      log "  [FAIL] pip install failed for $node_name"
+      FAILED+=("pip requirements: $node_name (see $LOG_FILE)")
+    fi
+  done
+
+  rm -f "$constraints"
+}
+
 # Temp folder used only by the Case B fallback path above (when a
 # Civitai metadata lookup fails and we have to read the filename off
 # the download response instead). Removed at the very end of the
@@ -813,6 +859,9 @@ CUSTOM_NODE_ARCHIVES=(
 for url in ${CUSTOM_NODE_ARCHIVES[@]+"${CUSTOM_NODE_ARCHIVES[@]}"}; do
   download_extension_zip "$url"
 done
+
+log "\n== Custom node Python requirements =="
+install_node_requirements
 
 log "\n== VAE =="
 download_file "https://civitai.red/api/download/models/648388?fileId=824329" "$VAE_DIR"

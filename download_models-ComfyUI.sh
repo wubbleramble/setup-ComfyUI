@@ -881,7 +881,6 @@ UPSCALERS=(
   "https://civitai.com/api/download/models/2634279?fileId=2522213"
   "https://huggingface.co/zelt54/RoNa/resolve/main/R-ESRGAN%204x%2B%20Anime6B.pth"
   "https://huggingface.co/Kim2091/AnimeSharp/resolve/main/4x-AnimeSharp.safetensors"
-  "https://huggingface.co/AInVFX/SeedVR2_comfyUI/resolve/main/seedvr2_ema_7b_sharp-Q4_K_M.gguf"
 )
 for url in "${UPSCALERS[@]}"; do
   download_file "$url" "$UPSCALE_DIR"
@@ -936,9 +935,9 @@ done
 
 log "\n== Checkpoints =="
 download_file "https://civitai.red/api/download/models/3334245?fileId=3220803" "$CHECKPOINT_DIR"
-download_file "https://civitai.red/api/download/models/2964675?fileId=2844069" "$CHECKPOINT_DIR"
 download_file "https://civitai.red/api/download/models/1911770?fileId=1810454" "$CHECKPOINT_DIR"
 download_file "https://civitai.red/api/download/models/3302448?fileId=3187496" "$CHECKPOINT_DIR"
+download_file "https://huggingface.co/Comfy-Org/SeedVR2/resolve/main/diffusion_models/seedvr2_7b_int8_convrot.safetensors" "$CHECKPOINT_DIR"
 
 log "\n== Embeddings =="
 EMBEDDINGS=(

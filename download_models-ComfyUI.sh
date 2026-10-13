@@ -847,6 +847,7 @@ CUSTOM_NODES=(
 "https://github.com/Azornes/Comfyui-Resolution-Master.git"
 "https://github.com/BadCafeCode/masquerade-nodes-comfyui.git"
 "https://github.com/ManglerFTW/ComfyI2I.git"
+"https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git"
 )
 for url in ${CUSTOM_NODES[@]+"${CUSTOM_NODES[@]}"}; do
   clone_extension "$url"
@@ -870,7 +871,7 @@ download_file "https://huggingface.co/Comfy-Org/SeedVR2/resolve/main/vae/ema_vae
 
 log "\n== Text Encoder =="
 download_file "https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/text_encoders/qwen_3_06b_base.safetensors" "$TEXT_ENCODER_DIR"
-download_file "https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/text_encoders/qwen_3_06b_base.safetensors" "$TEXT_ENCODER_DIR"
+download_file "https://huggingface.co/ahmed22xa/Huihui-Qwen3-VL-4B-Instruct-abliterated-comfy/resolve/main/Huihui-Qwen3-VL-4B-Instruct-abliterated-fp8_scaled.safetensors" "$TEXT_ENCODER_DIR"
 
 log "\n== Upscale models (ESRGAN and others) =="
 UPSCALERS=(

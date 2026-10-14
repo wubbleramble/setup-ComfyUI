@@ -57,6 +57,10 @@ TEXT_ENCODER_DIR="${MODELS_DIR}/text_encoders"
 # "detection" = the old ADetailer folder, as requested. Same note as
 # above: the detector node you use must be looking in this folder.
 DETECTION_DIR="${MODELS_DIR}/detection"
+# Impact Subpack's UltralyticsDetectorProvider only scans these two
+# folders, so detection models get linked into them after download.
+ULTRA_BBOX_DIR="${MODELS_DIR}/ultralytics/bbox"
+ULTRA_SEGM_DIR="${MODELS_DIR}/ultralytics/segm"
 
 # Civitai API key, if your links need auth to resolve. This script
 # reads it from the environment — set it BEFORE running the script,
@@ -118,7 +122,8 @@ ensure_dirs() {
   log "\n== Creating target folders (if they don't already exist) =="
   mkdir -p "$NODES_DIR" "$CONTROLNET_DIR" "$EMBEDDINGS_DIR" \
     "$UPSCALE_DIR" "$LATENT_UPSCALE_DIR" "$LORA_DIR" "$CHECKPOINT_DIR" \
-    "$VAE_DIR" "$VAE_APPROX_DIR" "$TEXT_ENCODER_DIR" "$DETECTION_DIR"
+    "$VAE_DIR" "$VAE_APPROX_DIR" "$TEXT_ENCODER_DIR" "$DETECTION_DIR" \
+    "$ULTRA_BBOX_DIR" "$ULTRA_SEGM_DIR"
 }
 
 # clone_extension <git_url>  (used for ComfyUI custom nodes)
@@ -799,6 +804,25 @@ install_node_requirements() {
 # the download response instead). Removed at the very end of the
 # script.
 TMP_DL_DIR="$(mktemp -d)"
+# link_detection_models
+# Symlinks every detector in DETECTION_DIR into the folder Impact
+# Subpack scans. Names containing "seg" go to segm, all others to bbox.
+# Already-linked files are skipped, so re-running the script is safe.
+link_detection_models() {
+  log "\n== Linking detection models for Impact Subpack =="
+  local f name dest
+  while IFS= read -r -d '' f; do
+    name="$(basename "$f")"
+    case "${name,,}" in
+      *seg*) dest="$ULTRA_SEGM_DIR" ;;
+      *)     dest="$ULTRA_BBOX_DIR" ;;
+    esac
+    if [ -e "$dest/$name" ] || [ -L "$dest/$name" ]; then
+      log "  [SKIP] already linked: $name"; continue
+    fi
+    ln -s "$f" "$dest/$name" && log "  [LINK] $name -> ${dest#$MODELS_DIR/}"
+  done < <(find "$DETECTION_DIR" -type f \( -iname '*.pt' -o -iname '*.pth' -o -iname '*.safetensors' \) -print0)
+}
 
 # ==================== MAIN ====================
 
@@ -932,6 +956,8 @@ DETECTION=(
 for url in "${DETECTION[@]}"; do
   download_file "$url" "$DETECTION_DIR"
 done
+
+link_detection_models
 
 log "\n== Checkpoints =="
 download_file "https://civitai.red/api/download/models/3334245?fileId=3220803" "$CHECKPOINT_DIR"

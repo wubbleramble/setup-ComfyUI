@@ -889,6 +889,15 @@ done
 log "\n== Custom node Python requirements =="
 install_node_requirements
 
+log "\n== LoRA =="
+LORAS=(
+"https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-SDXL-8steps-CFG-lora.safetensors"
+"https://civitai.red/api/download/models/3334160?fileId=3220708"
+)
+for url in "${LORAS[@]}"; do
+  download_file "$url" "$LORA_DIR"
+done
+
 log "\n== VAE =="
 download_file "https://civitai.red/api/download/models/648388?fileId=824329" "$VAE_DIR"
 download_file "https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/vae/qwen_image_vae.safetensors" "$VAE_DIR"
@@ -978,6 +987,7 @@ done
 log "\n== LoRA =="
 LORAS=(
 "https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-SDXL-8steps-CFG-lora.safetensors"
+"https://civitai.red/api/download/models/3334160?fileId=3220708"
 "https://civitai.red/api/download/models/3287274?fileId=3171666"
 "https://civitai.red/api/download/models/2060939?fileId=1957648"
 "https://civitai.red/api/download/models/2498581?fileId=2386638"

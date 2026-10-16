@@ -898,21 +898,16 @@ log "\n== Text Encoder =="
 download_file "https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/text_encoders/qwen_3_06b_base.safetensors" "$TEXT_ENCODER_DIR"
 download_file "https://huggingface.co/ahmed22xa/Huihui-Qwen3-VL-4B-Instruct-abliterated-comfy/resolve/main/Huihui-Qwen3-VL-4B-Instruct-abliterated-fp8_scaled.safetensors" "$TEXT_ENCODER_DIR"
 
-log "\n== Upscale models (ESRGAN and others) =="
-UPSCALERS=(
-  "https://civitai.red/api/download/models/164821?fileId=2037845"
-  "https://civitai.red/api/download/models/2674200?fileId=2560903"
-  "https://civitai.red/api/download/models/729727?fileId=643878"
-  "https://civitai.com/api/download/models/2634279?fileId=2522213"
-  "https://huggingface.co/zelt54/RoNa/resolve/main/R-ESRGAN%204x%2B%20Anime6B.pth"
-  "https://huggingface.co/Kim2091/AnimeSharp/resolve/main/4x-AnimeSharp.safetensors"
-)
-for url in "${UPSCALERS[@]}"; do
-  download_file "$url" "$UPSCALE_DIR"
-done
+log "\n== Checkpoints =="
+download_file "https://civitai.red/api/download/models/3334245?fileId=3220803" "$CHECKPOINT_DIR"
+download_file "https://civitai.red/api/download/models/1911770?fileId=1810454" "$CHECKPOINT_DIR"
+download_file "https://civitai.red/api/download/models/3302448?fileId=3187496" "$CHECKPOINT_DIR"
+download_file "https://huggingface.co/Comfy-Org/SeedVR2/resolve/main/diffusion_models/seedvr2_7b_int8_convrot.safetensors" "$CHECKPOINT_DIR"
 
 log "\n== ControlNet =="
 CONTROLNET=(
+"https://huggingface.co/kohya-ss/Anima-LLLite/resolve/main/anima-lllite-inpainting-v2.safetensors"
+"https://huggingface.co/kawaimasa/Anima_Kawai_Inpaint_ControlNet-LLLite/resolve/main/anima_kawai_inpaint_lllite.safetensors"
 "https://huggingface.co/kataragi/controlnetXL_inpaint/resolve/main/Kataragi_inpaintXL-fp16.safetensors"
 "https://huggingface.co/Eugeoter/noob-sdxl-controlnet-tile/resolve/main/noob-sdxl-controlnet-tile.safetensors"
 "https://huggingface.co/xinsir/controlnet-union-sdxl-1.0/resolve/main/diffusion_pytorch_model_promax.safetensors"
@@ -925,9 +920,6 @@ CONTROLNET=(
 "https://huggingface.co/kohya-ss/Anima-LLLite/resolve/main/anima-lllite-scribble-1.safetensors"
 "https://huggingface.co/kohya-ss/Anima-LLLite/resolve/main/anima-lllite-pose-1.safetensors"
 "https://huggingface.co/kohya-ss/Anima-LLLite/resolve/main/anima-lllite-lineart-1.safetensors"
-"https://huggingface.co/kawaimasa/Anima_Kawai_Inpaint_ControlNet-LLLite/resolve/main/anima_kawai_inpaint_lllite.safetensors"
-"https://huggingface.co/kohya-ss/Anima-LLLite/resolve/main/anima-lllite-inpainting-v1.safetensors"
-"https://huggingface.co/kohya-ss/Anima-LLLite/resolve/main/anima-lllite-inpainting-v2.safetensors"
 "https://huggingface.co/kohya-ss/Anima-LLLite/resolve/main/anima-lllite-exp-change-2-000007.safetensors"
 "https://huggingface.co/TaihoC/Anima-ControlNet-VACE-Depth/resolve/main/anima-vace-depth.safetensors"
 "https://huggingface.co/kohya-ss/Anima-LLLite/resolve/main/anima-lllite-any-test-like-v2.safetensors"
@@ -935,6 +927,19 @@ CONTROLNET=(
 )
 for url in "${CONTROLNET[@]}"; do
   download_file "$url" "$CONTROLNET_DIR"
+done
+
+log "\n== Upscale models (ESRGAN and others) =="
+UPSCALERS=(
+  "https://civitai.red/api/download/models/164821?fileId=2037845"
+  "https://civitai.red/api/download/models/2674200?fileId=2560903"
+  "https://civitai.red/api/download/models/729727?fileId=643878"
+  "https://civitai.com/api/download/models/2634279?fileId=2522213"
+  "https://huggingface.co/zelt54/RoNa/resolve/main/R-ESRGAN%204x%2B%20Anime6B.pth"
+  "https://huggingface.co/Kim2091/AnimeSharp/resolve/main/4x-AnimeSharp.safetensors"
+)
+for url in "${UPSCALERS[@]}"; do
+  download_file "$url" "$UPSCALE_DIR"
 done
 
 log "\n== Detection (formerly ADetailer) =="
@@ -959,12 +964,6 @@ for url in "${DETECTION[@]}"; do
 done
 
 link_detection_models
-
-log "\n== Checkpoints =="
-download_file "https://civitai.red/api/download/models/3334245?fileId=3220803" "$CHECKPOINT_DIR"
-download_file "https://civitai.red/api/download/models/1911770?fileId=1810454" "$CHECKPOINT_DIR"
-download_file "https://civitai.red/api/download/models/3302448?fileId=3187496" "$CHECKPOINT_DIR"
-download_file "https://huggingface.co/Comfy-Org/SeedVR2/resolve/main/diffusion_models/seedvr2_7b_int8_convrot.safetensors" "$CHECKPOINT_DIR"
 
 log "\n== Embeddings =="
 EMBEDDINGS=(

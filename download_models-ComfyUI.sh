@@ -898,11 +898,9 @@ LORAS=(
 for url in "${LORAS[@]}"; do
   download_file "$url" "$LORA_DIR"
 done
-
 log "\n== WD14 Tagger models =="
-# Destination: ComfyUI/custom_nodes/ComfyUI-WD14-Tagger/models/
-# The .onnx and .csv files MUST share the same base name, otherwise the
-# node will not pair them in its dropdown.
+# Models for the ComfyUI-WD14-Tagger node (pythongosssss). The .onnx and
+# .csv files must share the same base name for the node to pair them.
 WD14_TAGGER_DIR="${NODES_DIR}/ComfyUI-WD14-Tagger/models"
 mkdir -p "$WD14_TAGGER_DIR"
 download_file "https://huggingface.co/SmilingWolf/wd-eva02-large-tagger-v3/resolve/main/selected_tags.csv" "$WD14_TAGGER_DIR" "wd-eva02-large-tagger-v3.csv"

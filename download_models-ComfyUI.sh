@@ -834,6 +834,7 @@ log "\n== Custom nodes (git) =="
 # Add more by pasting another line like:
 #   "https://github.com/<author>/<repo>.git"
 CUSTOM_NODES=(
+"https://github.com/ukr8b3g-cmyk/Anima_Regional_Canvas.git"
 "https://github.com/Azornes/Comfyui-Model-Resolver.git"
 "https://gitlab.com/UmeAiRT-Studio/ComfyUI-UmeAiRT-Toolkit.git"
 "https://github.com/Mirumo0u0/ComfyUI-Cosmos-Reference.git"
@@ -915,6 +916,7 @@ download_file "https://huggingface.co/Comfy-Org/SeedVR2/resolve/main/diffusion_m
 
 log "\n== ControlNet =="
 CONTROLNET=(
+"https://huggingface.co/Sen-sou/Anima-LLLite-Regional-Controlnet/resolve/main/anima-lllite-regional-exp-v3.safetensors"
 "https://huggingface.co/kohya-ss/Anima-LLLite/resolve/main/anima-lllite-inpainting-v2.safetensors"
 "https://huggingface.co/kawaimasa/Anima_Kawai_Inpaint_ControlNet-LLLite/resolve/main/anima_kawai_inpaint_lllite.safetensors"
 "https://huggingface.co/kataragi/controlnetXL_inpaint/resolve/main/Kataragi_inpaintXL-fp16.safetensors"

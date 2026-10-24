@@ -944,6 +944,7 @@ CONTROLNET=(
 "https://huggingface.co/TaihoC/Anima-ControlNet-VACE-Depth/resolve/main/anima-vace-depth.safetensors"
 "https://huggingface.co/kohya-ss/Anima-LLLite/resolve/main/anima-lllite-any-test-like-v2.safetensors"
 "https://civitai.red/api/download/models/3068951?fileId=2947687"
+"https://huggingface.co/Sen-sou/Anima-LLLite-Regional-Controlnet/resolve/main/anima-lllite-regional-exp-v3.safetensors"
 )
 for url in "${CONTROLNET[@]}"; do
   download_file "$url" "$CONTROLNET_DIR"

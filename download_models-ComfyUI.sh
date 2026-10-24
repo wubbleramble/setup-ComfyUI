@@ -919,7 +919,6 @@ log "\n== Checkpoints =="
 download_file "https://civitai.red/api/download/models/3334245?fileId=3220803" "$CHECKPOINT_DIR"
 download_file "https://civitai.red/api/download/models/1911770?fileId=1810454" "$CHECKPOINT_DIR"
 download_file "https://civitai.red/api/download/models/3302448?fileId=3187496" "$CHECKPOINT_DIR"
-download_file "https://huggingface.co/Comfy-Org/SeedVR2/resolve/main/diffusion_models/seedvr2_7b_int8_convrot.safetensors" "$CHECKPOINT_DIR"
 
 log "\n== ControlNet =="
 CONTROLNET=(

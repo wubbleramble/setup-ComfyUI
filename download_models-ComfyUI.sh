@@ -1099,6 +1099,7 @@ LORAS=(
 "https://civitai.red/api/download/models/3023777?fileId=2902507"
 "https://civitai.red/api/download/models/3226785?fileId=3108951"
 "https://civitai.red/api/download/models/3213971?fileId=3095697"
+"https://civitai.red/api/download/models/3020542?fileId=2899373"
 #for luz comission
 "https://civitai.red/api/download/models/3309555?fileId=3194770"
 "https://civitai.red/api/download/models/3318624?fileId=3204220"

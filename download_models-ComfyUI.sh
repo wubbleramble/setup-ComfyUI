@@ -920,7 +920,7 @@ download_file "https://huggingface.co/circlestone-labs/Anima/resolve/main/split_
 download_file "https://huggingface.co/ahmed22xa/Huihui-Qwen3-VL-4B-Instruct-abliterated-comfy/resolve/main/Huihui-Qwen3-VL-4B-Instruct-abliterated-fp8_scaled.safetensors" "$TEXT_ENCODER_DIR"
 
 log "\n== Checkpoints =="
-download_file "https://civitai.red/api/download/models/3334245?fileId=3220803" "$CHECKPOINT_DIR"
+download_file "https://civitai.red/api/download/models/2964675?fileId=2844069" "$CHECKPOINT_DIR"
 download_file "https://civitai.red/api/download/models/1911770?fileId=1810454" "$CHECKPOINT_DIR"
 download_file "https://civitai.red/api/download/models/3302448?fileId=3187496" "$CHECKPOINT_DIR"
 

@@ -824,6 +824,113 @@ link_detection_models() {
   done < <(find "$DETECTION_DIR" -type f \( -iname '*.pt' -o -iname '*.pth' -o -iname '*.safetensors' \) -print0)
 }
 
+# ==================== ENVIRONMENT FIXES ====================
+#
+# apply_comfyui_fixes
+#
+# Two small fixes for problems seen on fresh vast.ai ComfyUI instances.
+# Both are IDEMPOTENT: running the script again is safe, and a fix that
+# is already in place is simply reported as [SKIP]. This function must
+# run AFTER the custom nodes have been cloned (Fix 2 edits a file that
+# belongs to one of them).
+#
+#   FIX 1 - Remove TensorFlow from ComfyUI's Python environment.
+#     Symptom: preprocessor nodes (for example the Zoe depth one) crash
+#     with "google.protobuf.runtime_version.VersionError ... gencode
+#     6.31.1 runtime 5.29.6". The "transformers" library imports
+#     TensorFlow whenever it is installed, and the installed TensorFlow
+#     and Protobuf versions do not match. ComfyUI runs on PyTorch and
+#     does not need TensorFlow, so removing it avoids the conflict.
+#     The Python environment is /venv/main by default. Change it
+#     without editing this file with:  export COMFY_VENV="/other/venv"
+#
+#   FIX 2 - Stop one custom node from forcing the Hugging Face mirror.
+#     Symptom: automatic model downloads (controlnet preprocessors and
+#     others) fail with "Distant resource does not seem to be on
+#     huggingface.co" or "We couldn't connect to 'https://hf-mirror.com'".
+#     The file comfyui-mixlab-nodes/nodes/SenseVoice.py contains a line
+#     at the top level that sets the HF_ENDPOINT environment variable to
+#     hf-mirror.com as soon as ComfyUI starts, which redirects EVERY
+#     Hugging Face download in the program to the mirror. This fix puts
+#     a "# " in front of that one line (turning it into a comment) and
+#     keeps a backup copy named SenseVoice.py.bak next to it.
+#
+# Both fixes only take effect after ComfyUI is RESTARTED, because
+# Python reads these files and packages when it starts.
+COMFY_VENV="${COMFY_VENV:-/venv/main}"
+
+apply_comfyui_fixes() {
+  log "\n== Environment fixes =="
+  local fixes_applied=0
+
+  # ---- Pick the Python that ComfyUI actually uses ----
+  local py=""
+  if [ -x "${COMFY_VENV}/bin/python" ]; then
+    py="${COMFY_VENV}/bin/python"
+  elif [ -n "$HAVE_PY3" ]; then
+    py="$HAVE_PY3"
+  fi
+
+  # ---- FIX 1: remove TensorFlow ----
+  if [ -z "$py" ]; then
+    log "  [WARN] No Python found -- skipping the TensorFlow check"
+  elif ! "$py" -m pip --version >/dev/null 2>&1; then
+    log "  [WARN] pip is not available for $py -- skipping the TensorFlow check"
+  else
+    local tf_found=0
+    local pkg
+    for pkg in tensorflow tensorflow-cpu; do
+      if "$py" -m pip show "$pkg" >/dev/null 2>&1; then
+        tf_found=1
+        log "  [FIX] Uninstalling $pkg (ComfyUI does not need it; it conflicts with Protobuf)"
+        "$py" -m pip uninstall -y "$pkg" 2>&1 | tee -a "$LOG_FILE"
+        if [ "${PIPESTATUS[0]}" -eq 0 ]; then
+          SUCCEEDED+=("fix: uninstalled $pkg")
+          fixes_applied=1
+        else
+          log "  [FAIL] Could not uninstall $pkg"
+          FAILED+=("fix: could not uninstall $pkg")
+        fi
+      fi
+    done
+    if [ "$tf_found" -eq 0 ]; then
+      log "  [SKIP] TensorFlow is not installed (nothing to remove)"
+      SKIPPED+=("fix: TensorFlow already absent")
+    fi
+  fi
+
+  # ---- FIX 2: neutralise the forced Hugging Face mirror ----
+  local sv="${NODES_DIR}/comfyui-mixlab-nodes/nodes/SenseVoice.py"
+  # In this pattern each "." stands for either kind of quote mark. It
+  # only matches an UNCOMMENTED line that starts at the very left edge
+  # of the line (a top-level statement), so commented lines and the
+  # indented text message elsewhere in the file are left alone.
+  local pat='^os\.environ\[.HF_ENDPOINT.\] *= *.https://hf-mirror\.com.'
+
+  if [ ! -f "$sv" ]; then
+    log "  [SKIP] SenseVoice.py not found (comfyui-mixlab-nodes is not installed) -- mirror fix not needed"
+    SKIPPED+=("fix: HF mirror override (file not present)")
+  elif grep -qE "$pat" "$sv"; then
+    [ -f "${sv}.bak" ] || cp "$sv" "${sv}.bak"
+    sed -i -E "s|(${pat})|# \1|" "$sv"
+    if grep -qE "$pat" "$sv"; then
+      log "  [FAIL] Tried to comment out the mirror line in SenseVoice.py but it is still active"
+      FAILED+=("fix: HF mirror override still active in SenseVoice.py")
+    else
+      log "  [FIX] Commented out the HF_ENDPOINT mirror line in SenseVoice.py (backup: SenseVoice.py.bak)"
+      SUCCEEDED+=("fix: disabled forced hf-mirror.com endpoint in SenseVoice.py")
+      fixes_applied=1
+    fi
+  else
+    log "  [SKIP] No active mirror line found in SenseVoice.py (already fixed, or the node changed)"
+    SKIPPED+=("fix: HF mirror override already disabled")
+  fi
+
+  if [ "$fixes_applied" -eq 1 ]; then
+    log "\n  [NOTE] RESTART ComfyUI so these fixes take effect (Manager restart button, or the instance's process manager)."
+  fi
+}
+
 # ==================== MAIN ====================
 
 ensure_dirs
@@ -891,6 +998,12 @@ CUSTOM_NODE_ARCHIVES=(
 for url in ${CUSTOM_NODE_ARCHIVES[@]+"${CUSTOM_NODE_ARCHIVES[@]}"}; do
   download_extension_zip "$url"
 done
+
+# Fixes for known problems on fresh instances (see the big comment on
+# apply_comfyui_fixes above). Runs right after the custom nodes exist and
+# BEFORE the long model downloads, so it still gets done if you stop the
+# script early.
+apply_comfyui_fixes
 
 log "\n== Custom node Python requirements =="
 install_node_requirements
